@@ -1,0 +1,78 @@
+#jinja2: lstrip_blocks: True
+# {{ ansible_managed }}
+version: '3'
+
+services:
+  netbox: &netbox
+    image: {{ netbox_netbox_image }}
+    depends_on:
+      - postgres
+      - redis
+      - netbox-worker
+    env_file: {{ netbox_root_dir }}/netbox.env
+    volumes:
+      - {{ netbox_root_dir }}/configuration:/etc/netbox/config:z,ro
+      - netbox-report-files:/etc/netbox/reports:z,ro
+      - netbox-nginx-config:/etc/netbox-nginx:z
+      - netbox-static-files:/opt/netbox/netbox/static:z
+      - netbox-media-files:/opt/netbox/netbox/media:z
+    restart: unless-stopped
+
+  netbox-worker:
+    <<: *netbox
+    depends_on:
+      - redis
+    entrypoint:
+      - python3
+      - /opt/netbox/netbox/manage.py
+    command:
+      - rqworker
+
+  nginx:
+    command: nginx -c /etc/netbox-nginx/nginx.conf
+    image: {{ netbox_nginx_image }}
+    depends_on:
+      - netbox
+    ports:
+      - "{{ netbox_port }}:8080/tcp"
+    networks:
+      - default
+      - proxy
+    volumes:
+      - netbox-static-files:/opt/netbox/netbox/static:ro
+      - netbox-nginx-config:/etc/netbox-nginx/:ro
+
+  postgres:
+    image: postgres:10.4-alpine
+    environment:
+      POSTGRES_USER: {{ netbox_pg_user }}
+      POSTGRES_PASSWORD: {{ netbox_pg_password }}
+      POSTGRES_DB: {{ netbox_pg_db }}
+    volumes:
+      - {{ netbox_root_dir }}/postgres:/var/lib/postgresql/data
+
+  redis:
+    image: {{ netbox_redis_image }}
+    command:
+      - sh
+      - -c
+      - redis-server --appendonly yes --requirepass {{ netbox_redis_password }}
+    volumes:
+      - netbox-redis-data:/data
+
+volumes:
+  netbox-static-files:
+    driver: local
+  netbox-nginx-config:
+    driver: local
+  netbox-media-files:
+    driver: local
+  netbox-report-files:
+    driver: local
+  netbox-redis-data:
+    driver: local
+
+networks:
+  proxy:
+    external:
+      name: proxy
