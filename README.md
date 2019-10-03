@@ -9,6 +9,22 @@ Install this role with Ansible Galaxy:
 
 `ansible-galaxy install git+https://github.com/wastrachan/ansible-role-netbox-docker.git`
 
+Local Installation
+------------------
+If you'd like to include this role directly in a playbook, set your [`roles_path`](https://docs.ansible.com/ansible/latest/reference_appendices/galaxy.html#roles-path) to `./roles` via environment variable or `ansible.cfg`.
+
+Then, add this role to your playbook's `requirements.yml`:
+
+```
+- src: https://github.com/wastrachan/ansible-role-netbox-docker
+  version: master
+  name: netbox-docker
+```
+
+And finally, install the role with Ansible Galaxy:
+
+`ansible-galaxy install -r requirements.yml`
+
 
 Requirements
 ------------
