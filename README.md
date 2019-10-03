@@ -7,7 +7,7 @@ Ansible role to configure Netbox as a docker-compose project.
 Install this role in your playbook with ansible galaxy:
 
 ```
-ansible-galaxy install https://github.com/wastrachan/ansible-role-netbox
+ansible-galaxy install --roles-path ./roles git+https://github.com/wastrachan/ansible-role-netbox-docker.git
 ```
 
 #### Configuration
