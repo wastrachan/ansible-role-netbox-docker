@@ -1,28 +1,22 @@
 ---
-dependencies: []
-
 galaxy_info:
-  author: wastrachan
-  description: Netbox as a docker-compose project on Linux
+  role_name: netbox-docker
+  author: Winston Astrachan
   company: ""
-  license: "license (MIT)"
+  description: Netbox as a docker-compose project on Linux
+  license: license (MIT)
   min_ansible_version: 2.4
+
   platforms:
-    - name: Fedora
-      versions:
-        - all
-    - name: Amazon
-      versions:
-        - all
-    - name: Debian
-      versions:
-        - all
     - name: Ubuntu
       versions:
         - trusty
         - xenial
         - bionic
-  galaxy_tags:
-    - web
+    - name: Debian
+      versions:
+        - all
 
-allow_duplicates: true
+  galaxy_tags: []
+
+dependencies: []
