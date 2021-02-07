@@ -3,7 +3,7 @@ galaxy_info:
   role_name: netbox-docker
   author: Winston Astrachan
   company: ""
-  description: Netbox as a docker-compose project on Linux
+  description: Netbox as a docker-compose project on Debian Linux
   license: license (MIT)
   min_ansible_version: 2.4
 

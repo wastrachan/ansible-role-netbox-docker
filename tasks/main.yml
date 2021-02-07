@@ -1,18 +1,37 @@
 ---
 
-- name: Update netbox configuration directory
+- name: update netbox directories
   file:
-    path: "{{ netbox_root_dir }}/configuration"
+    path: "{{ netbox_base_dir }}/{{ item }}"
     state: directory
     recurse: true
+  loop:
+    - env
 
-- name: Update configuration
+- name: update environment files
+  template:
+    src: "env/{{ item }}.j2"
+    dest: "{{ netbox_base_dir }}/env/{{ item }}"
+  loop:
+    - netbox.env
+    - postgres.env
+    - redis-cache.env
+    - redis.env
+  notify: restart netbox
+
+- name: update configuration files
   template:
     src: "{{ item }}.j2"
-    dest: "{{ netbox_root_dir }}/{{ item }}"
-  with_items:
+    dest: "{{ netbox_base_dir }}/{{ item }}"
+  loop:
     - docker-compose.yml
+  notify: restart netbox
+
+- name: remove outdated files
+  file:
+    path: "{{ netbox_base_dir }}/{{ item }}"
+    state: absent
+  loop:
     - netbox.env
     - configuration/configuration.py
     - configuration/gunicorn_config.py
-  notify: restart netbox

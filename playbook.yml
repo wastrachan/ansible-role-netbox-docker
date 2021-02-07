@@ -1,0 +1,5 @@
+- hosts: localhost
+  become: yes
+  become_method: sudo
+  roles:
+    - ../ansible-role-netbox-docker
