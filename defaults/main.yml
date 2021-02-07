@@ -1,6 +1,6 @@
 ---
 netbox_base_dir: /opt/netbox
-netbox_port: 8080
+netbox_port: 8080  # If blank, netbox service will not be exposed
 
 netbox_netbox_image: netboxcommunity/netbox:v2.10.4
 netbox_nginx_image: nginx:1.19-alpine
