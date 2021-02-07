@@ -14,6 +14,7 @@ netbox_admin_username: admin
 netbox_allowed_hosts: '*'
 netbox_cors_origin_allow_all: true
 netbox_cors_origin_whitelist: http://localhost
+netbox_default_page_size: 250
 netbox_email_certfile: ''
 netbox_email_from: netbox@bar.com
 netbox_email_keyfile: ''
