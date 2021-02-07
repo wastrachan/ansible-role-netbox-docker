@@ -19,7 +19,10 @@ services:
     - netbox-media-files:/opt/netbox/netbox/media:z
     {% if netbox_port %}
     ports:
-    - {{ netbox_port }}:8080
+    - "{{ netbox_port }}:8080"
+    {% else %}
+    expose:
+    - "8080"
     {% endif %}
     restart: unless-stopped
     {% if netbox_container_labels %}
@@ -37,6 +40,8 @@ services:
     command:
     - rqworker
     ports: []
+    expose: []
+    labels: []
     restart: unless-stopped
 
   postgres:
