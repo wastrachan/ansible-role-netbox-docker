@@ -20,6 +20,10 @@ services:
     ports:
     - {{ netbox_port }}:8080
     restart: unless-stopped
+    {% if netbox_container_labels %}
+    labels:
+      {{ netbox_container_labels | to_nice_yaml | indent(6) }}
+    {% endif %}
 
   netbox-worker:
     <<: *netbox
