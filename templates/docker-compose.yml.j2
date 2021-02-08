@@ -29,6 +29,11 @@ services:
     labels:
       {{ netbox_container_labels | to_nice_yaml | indent(6) }}
     {% endif %}
+    networks:
+    - default
+    {% if netbox_proxy_network_name %}
+    - proxy
+    {% endif %}
 
   netbox-worker:
     <<: *netbox
@@ -42,6 +47,8 @@ services:
     ports: []
     expose: []
     labels: []
+    networks:
+    - default
     restart: unless-stopped
 
   postgres:
@@ -49,6 +56,8 @@ services:
     env_file: env/postgres.env
     volumes:
     - netbox-postgres-data:/var/lib/postgresql/data
+    networks:
+    - default
     restart: unless-stopped
 
   redis:
@@ -60,6 +69,8 @@ services:
     env_file: env/redis.env
     volumes:
     - netbox-redis-data:/data
+    networks:
+    - default
     restart: unless-stopped
 
   redis-cache:
@@ -69,6 +80,8 @@ services:
     - -c # this is to evaluate the $REDIS_PASSWORD from the env
     - redis-server --requirepass $$REDIS_PASSWORD ## $$ because of docker-compose
     env_file: env/redis-cache.env
+    networks:
+    - default
     restart: unless-stopped
 
 volumes:
@@ -78,3 +91,10 @@ volumes:
     driver: local
   netbox-redis-data:
     driver: local
+
+{% if netbox_proxy_network_name %}
+networks:
+  proxy:
+    external:
+      name: {{ netbox_proxy_network_name }}
+{% end %}

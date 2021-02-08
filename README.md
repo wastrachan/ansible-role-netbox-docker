@@ -57,11 +57,12 @@ Including an example of how to use your role (for instance, with variables passe
 
 Traefik/nginx-proxy Support
 ---------------------------
-This playbook can be used with [traefik](https://hub.docker.com/_/traefik) or jwilder's [nginx-proxy](https://hub.docker.com/r/jwilder/nginx-proxy) by adding labels with `netbox_container_labels`, or environment variables with `netbox_container_env`, respectively. While not a complete guide to these services, your configuration may look like the below:
+This playbook can be used with [traefik](https://hub.docker.com/_/traefik) or jwilder's [nginx-proxy](https://hub.docker.com/r/jwilder/nginx-proxy) by adding labels with `netbox_container_labels`, or environment variables with `netbox_container_env`, respectively. Additionally, `netbox_proxy_network_name` will attach the netbox service to an additional network, as traefik/nginx-proxy usually reside in a network other than that created by docker-compose projects. While not a complete guide to these services, your configuration may look like the below:
 
 #### traefik
 ```yaml
 netbox_port: null
+netbox_proxy_network_name: 'default'
 netbox_container_labels:
   traefik.enable: "true"
   traefik.http.services.netbox.loadbalancer.server.port: "8080"
@@ -71,6 +72,7 @@ netbox_container_labels:
 #### nginx-proxy
 ```yaml
 netbox_port: null
+netbox_proxy_network_name: 'default'
 netbox_container_env:
   VIRTUAL_HOST: netbox.domain.com
   VIRTUAL_PORT: "8080"
