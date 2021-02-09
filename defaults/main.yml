@@ -1,17 +1,18 @@
 ---
 netbox_base_dir: /opt/netbox
-netbox_port: 8080  # If blank, netbox service will not be exposed
+netbox_port: 8080
 
 netbox_netbox_image: netboxcommunity/netbox:v2.10.4
-netbox_nginx_image: nginx:1.19-alpine
 netbox_redis_image: redis:6-alpine
 netbox_postgres_image: postgres:12-alpine
 
-netbox_admin_api_token: 0123456789abcdef0123456789abcdef01234567
+netbox_admin_api_token: ''
 netbox_admin_email: admin@example.com
 netbox_admin_password: admin
 netbox_admin_username: admin
 netbox_allowed_hosts: '*'
+netbox_container_env: []
+netbox_container_labels: []
 netbox_cors_origin_allow_all: true
 netbox_cors_origin_whitelist: http://localhost
 netbox_default_page_size: 250
@@ -26,13 +27,6 @@ netbox_email_use_ssl: false
 netbox_email_use_tls: false
 netbox_email_username: netbox
 netbox_enforce_global_unique: false
-netbox_container_labels: []
-  # traefik.enable: "true"
-  # traefik.http.services.netbox.loadbalancer.server.port: "8080"
-  # traefik.http.routers.netbox.rule: "Host(`netbox.domain.com`)"
-netbox_container_env: []
-  # VIRTUAL_HOST: netbox.domain.com
-  # VIRTUAL_PORT: 8080
 netbox_login_required: false
 netbox_max_page_size: 1000
 netbox_metrics_enabled: false
