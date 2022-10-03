@@ -6,6 +6,7 @@
     state: directory
     recurse: true
   loop:
+    - configuration
     - env
 
 - name: update environment files
@@ -19,12 +20,21 @@
     - redis.env
   notify: restart netbox
 
+- name: copy configuration file
+  ansible.builtin.copy:
+    src: files/configuration.py
+    dest: "{{ netbox_base_dir }}/configuration/"
+    owner: root
+    group: root
+    mode: '0644'
+
 - name: update configuration files
   template:
     src: "{{ item }}.j2"
     dest: "{{ netbox_base_dir }}/{{ item }}"
   loop:
     - docker-compose.yml
+    - docker-compose.override.yml
   notify: restart netbox
 
 - name: remove outdated files
@@ -33,5 +43,4 @@
     state: absent
   loop:
     - netbox.env
-    - configuration/configuration.py
     - configuration/gunicorn_config.py
