@@ -58,6 +58,9 @@ services:
     depends_on:
     - redis
     - postgres
+    ports: []
+    expose: []
+    labels: []
     command:
     - /opt/netbox/housekeeping.sh
 
