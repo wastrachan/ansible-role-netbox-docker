@@ -2,7 +2,7 @@
 netbox_base_dir: /opt/netbox
 netbox_port: 8080
 
-netbox_netbox_image: netboxcommunity/netbox:v3.3-2.2.0
+netbox_netbox_image: netboxcommunity/netbox:v3.3.5
 netbox_redis_image: redis:7-alpine
 netbox_postgres_image: postgres:14-alpine
 

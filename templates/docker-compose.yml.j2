@@ -12,21 +12,45 @@ services:
     - redis-cache
     - netbox-worker
     env_file: env/netbox.env
-    user: 'unit:root'
+    user: '101'
     volumes:
-    - ./configuration:/etc/netbox/config:z,ro
     - ./reports:/etc/netbox/reports:z,ro
     - ./scripts:/etc/netbox/scripts:z,ro
     - netbox-media-files:/opt/netbox/netbox/media:z
+    {% if netbox_port %}
+    ports:
+    - "{{ netbox_port }}:8080"
+    {% else %}
+    expose:
+    - "8080"
+    {% endif %}
+    restart: unless-stopped
+    {% if netbox_container_labels %}
+    labels:
+      {{ netbox_container_labels | to_nice_yaml | indent(6) }}
+    {% endif %}
+    networks:
+    - default
+    {% if netbox_proxy_network_name %}
+    - proxy
+    {% endif %}
+
   netbox-worker:
     <<: *netbox
     depends_on:
     - redis
-    - postgres
-    command:
+    entrypoint:
     - /opt/netbox/venv/bin/python
     - /opt/netbox/netbox/manage.py
+    command:
     - rqworker
+    ports: []
+    expose: []
+    labels: []
+    networks:
+    - default
+    restart: unless-stopped
+
   netbox-housekeeping:
     <<: *netbox
     depends_on:
@@ -40,6 +64,9 @@ services:
     env_file: env/postgres.env
     volumes:
     - netbox-postgres-data:/var/lib/postgresql/data
+    networks:
+    - default
+    restart: unless-stopped
 
   redis:
     image: {{ netbox_redis_image }}
@@ -50,6 +77,10 @@ services:
     env_file: env/redis.env
     volumes:
     - netbox-redis-data:/data
+    networks:
+    - default
+    restart: unless-stopped
+
   redis-cache:
     image: {{ netbox_redis_image }}
     command:
@@ -57,6 +88,9 @@ services:
     - -c # this is to evaluate the $REDIS_PASSWORD from the env
     - redis-server --requirepass $$REDIS_PASSWORD ## $$ because of docker-compose
     env_file: env/redis-cache.env
+    networks:
+    - default
+    restart: unless-stopped
 
 volumes:
   netbox-media-files:
