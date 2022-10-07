@@ -17,6 +17,8 @@ services:
     - ./reports:/etc/netbox/reports:z,ro
     - ./scripts:/etc/netbox/scripts:z,ro
     - netbox-media-files:/opt/netbox/netbox/media:z
+    security_opt:
+    - seccomp:unconfined
     {% if netbox_port %}
     ports:
     - "{{ netbox_port }}:8080"
