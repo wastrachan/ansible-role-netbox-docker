@@ -51,6 +51,14 @@ services:
     - default
     restart: unless-stopped
 
+  netbox-housekeeping:
+    <<: *netbox
+    depends_on:
+    - redis
+    - postgres
+    command:
+    - /opt/netbox/housekeeping.sh
+
   postgres:
     image: {{ netbox_postgres_image }}
     env_file: env/postgres.env
