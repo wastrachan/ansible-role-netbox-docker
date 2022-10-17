@@ -1,5 +1,6 @@
-- hosts: localhost
-  become: yes
+- name: Install netbox in docker
+  hosts: localhost
+  become: true
   become_method: sudo
   roles:
     - ../ansible-role-netbox-docker

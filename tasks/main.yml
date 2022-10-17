@@ -1,15 +1,15 @@
 ---
 
-- name: update netbox directories
-  file:
+- name: Update netbox directories
+  ansible.builtin.file:
     path: "{{ netbox_base_dir }}/{{ item }}"
     state: directory
     recurse: true
   loop:
     - env
 
-- name: update environment files
-  template:
+- name: Update environment files
+  ansible.builtin.template:
     src: "env/{{ item }}.j2"
     dest: "{{ netbox_base_dir }}/env/{{ item }}"
   loop:
@@ -17,18 +17,18 @@
     - postgres.env
     - redis-cache.env
     - redis.env
-  notify: restart netbox
+  notify: Restart netbox
 
-- name: update configuration files
-  template:
+- name: Update configuration files
+  ansible.builtin.template:
     src: "{{ item }}.j2"
     dest: "{{ netbox_base_dir }}/{{ item }}"
   loop:
     - docker-compose.yml
-  notify: restart netbox
+  notify: Restart netbox
 
-- name: remove outdated files
-  file:
+- name: Remove outdated files
+  ansible.builtin.file:
     path: "{{ netbox_base_dir }}/{{ item }}"
     state: absent
   loop:
