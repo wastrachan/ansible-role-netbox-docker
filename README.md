@@ -88,6 +88,7 @@ Configuration and installation options are made available as variables. Some of 
 | `netbox_skip_startup_scripts`                 | `false`                          | If true, do not run startup scripts on container start
 | `netbox_skip_superuser`                       | `false`                          | If true, do not create superuser on container start
 | `netbox_webhooks_enabled`                     | `true`                           | If true, enable netbox webhooks functionality
+| `netbox_extra_config`                         | -                                | If provided, this string will be rendered in [`config/extra.py`](https://github.com/netbox-community/netbox-docker/blob/release/configuration/extra.py)
 
 
 Example Playbook

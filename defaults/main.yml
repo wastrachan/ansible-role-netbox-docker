@@ -51,3 +51,4 @@ netbox_secret_key: r8OwDznj!!dci#P9ghmRfdu1Ysxm0AiPeDCQhKE+N_rClfWNj
 netbox_skip_startup_scripts: false
 netbox_skip_superuser: false
 netbox_webhooks_enabled: true
+netbox_extra_config: ''

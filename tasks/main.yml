@@ -25,6 +25,7 @@
     dest: "{{ netbox_base_dir }}/{{ item }}"
   loop:
     - docker-compose.yml
+    - extra.py
   notify: Restart netbox
 
 - name: Remove outdated files
