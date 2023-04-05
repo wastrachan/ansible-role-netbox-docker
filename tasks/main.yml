@@ -12,6 +12,7 @@
   ansible.builtin.template:
     src: "env/{{ item }}.j2"
     dest: "{{ netbox_base_dir }}/env/{{ item }}"
+    mode: "0644"
   loop:
     - netbox.env
     - postgres.env
@@ -23,6 +24,7 @@
   ansible.builtin.template:
     src: "{{ item }}.j2"
     dest: "{{ netbox_base_dir }}/{{ item }}"
+    mode: "0644"
   loop:
     - docker-compose.yml
     - extra.py
