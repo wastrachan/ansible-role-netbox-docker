@@ -1,6 +1,5 @@
 ---
-
 - name: Restart netbox
-  community.docker.docker_compose:
-    project_src: "{{ netbox_base_dir }}"
-    restarted: true
+  shell:
+    cmd: "docker compose up -d"
+    chdir: "/opt/netbox"

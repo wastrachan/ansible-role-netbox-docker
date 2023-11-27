@@ -1,5 +1,4 @@
 ---
-
 - name: Update netbox directories
   ansible.builtin.file:
     path: "{{ netbox_base_dir }}/{{ item }}"
