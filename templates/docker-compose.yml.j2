@@ -109,6 +109,6 @@ volumes:
 {% if netbox_proxy_network_name %}
 networks:
   proxy:
-    external:
-      name: {{ netbox_proxy_network_name }}
+    name: {{ netbox_proxy_network_name }}
+    external: true
 {% endif %}
