@@ -2,4 +2,4 @@
 - name: Restart netbox
   shell:
     cmd: "docker compose up -d"
-    chdir: "/opt/netbox"
+    chdir: "{{ netbox_base_dir }}"
