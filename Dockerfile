@@ -1,4 +1,4 @@
-FROM python:3.11-bookworm
+FROM python:3.12-bookworm
 LABEL description="ansible-gfg-lol run container"
 ENV PYTHONUNBUFFERED=1 \
     LANG="C.UTF-8" \
