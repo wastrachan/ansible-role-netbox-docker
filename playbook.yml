@@ -1,6 +1,7 @@
+---
 - name: Install netbox in docker
   hosts: localhost
   become: true
-  become_method: sudo
+  become_method: ansible.builtin.sudo
   roles:
-    - ../ansible-role-netbox-docker
+    - .
