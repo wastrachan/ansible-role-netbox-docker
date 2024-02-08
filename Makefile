@@ -1,8 +1,3 @@
-#
-# Ansible role to configure Netbox as a docker-compose project
-#
-# Copyright (c) 2024 Winston Astrachan
-#
 SHELL=/bin/bash
 
 .PHONY: help
@@ -19,4 +14,9 @@ help:
 
 .PHONY: lint
 lint: .docker-build
+	@docker run \
+	--rm \
+	-it \
+	--mount type=bind,source=".",target=/app \
+	ansible-netbox-docker \
 	ansible-lint
