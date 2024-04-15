@@ -13,6 +13,7 @@ services:
     env_file: env/netbox.env
     user: '101'
     volumes:
+      - ./nginx-unit.json:/etc/unit/nginx-unit.json:ro
       - ./reports:/etc/netbox/reports:z,ro
       - ./scripts:/etc/netbox/scripts:z,ro
       - ./extra.py:/etc/netbox/config/extra.py:ro

@@ -29,6 +29,13 @@
     - extra.py
   notify: Restart netbox
 
+- name: Update container mounts
+  ansible.builtin.copy:
+    src: nginx-unit.json
+    dest: "{{ netbox_base_dir }}/nginx-unit.json"
+    mode: "0644"
+  notify: Restart netbox
+
 - name: Remove outdated files
   ansible.builtin.file:
     path: "{{ netbox_base_dir }}/{{ item }}"
