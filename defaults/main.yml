@@ -5,6 +5,7 @@ netbox_port: 8080
 netbox_netbox_image: netboxcommunity/netbox:v3.7
 netbox_redis_image: redis:7-alpine
 netbox_postgres_image: postgres:16-alpine
+netbox_postgres_enabled: True
 
 netbox_admin_api_token: ""
 netbox_admin_email: admin@example.com
