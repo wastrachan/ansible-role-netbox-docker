@@ -53,3 +53,5 @@ netbox_skip_startup_scripts: false
 netbox_skip_superuser: false
 netbox_webhooks_enabled: true
 netbox_extra_config: ""
+
+netbot_become: false

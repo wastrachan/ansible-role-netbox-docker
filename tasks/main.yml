@@ -6,6 +6,7 @@
     recurse: true
   loop:
     - env
+  become: "{{ netbox_become }}"
 
 - name: Update environment files
   ansible.builtin.template:
@@ -17,6 +18,7 @@
     - postgres.env
     - redis-cache.env
     - redis.env
+  become: "{{ netbox_become }}"
   notify: Restart netbox
 
 - name: Update configuration files
@@ -27,6 +29,7 @@
   loop:
     - docker-compose.yml
     - extra.py
+  become: "{{ netbox_become }}"
   notify: Restart netbox
 
 - name: Update container mounts
@@ -34,6 +37,7 @@
     src: nginx-unit.json
     dest: "{{ netbox_base_dir }}/nginx-unit.json"
     mode: "0644"
+  become: "{{ netbox_become }}"
   notify: Restart netbox
 
 - name: Remove outdated files
@@ -44,3 +48,4 @@
     - netbox.env
     - configuration/configuration.py
     - configuration/gunicorn_config.py
+  become: "{{ netbox_become }}"
