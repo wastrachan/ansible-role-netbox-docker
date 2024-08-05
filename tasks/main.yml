@@ -49,3 +49,17 @@
     - configuration/configuration.py
     - configuration/gunicorn_config.py
   become: "{{ netbox_become }}"
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Ensure netbox is running
+  uri:
+    url: "{{ netbox_url }}"
+    follow_redirects: none
+  register: netbox_url_results
+  until: netbox_url_results.status == 200
+  retries: 20
+  delay: 5
+  check_mode: False
+
