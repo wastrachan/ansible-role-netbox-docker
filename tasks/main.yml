@@ -53,6 +53,11 @@
 - name: Flush handlers
   meta: flush_handlers
 
+- name: Ensure components are started
+  community.docker.docker_compose_v2:
+    project_src: "{{ netbox_base_dir }}"
+  become: "{{ netbox_become }}"
+
 - name: Ensure netbox is running
   uri:
     url: "{{ netbox_url }}"
