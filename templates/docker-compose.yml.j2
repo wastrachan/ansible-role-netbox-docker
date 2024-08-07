@@ -6,7 +6,9 @@ services:
   netbox: &netbox
     image: {{ netbox_netbox_image }}
     depends_on:
+      {% if netbox_postgres_enabled %}
       - postgres
+      {% endif %}
       - redis
       - redis-cache
       - netbox-worker
@@ -58,7 +60,9 @@ services:
     <<: *netbox
     depends_on:
       - redis
+      {% if netbox_postgres_enabled %}
       - postgres
+      {% endif %}
     ports: []
     expose: []
     labels: []
@@ -103,8 +107,10 @@ services:
 volumes:
   netbox-media-files:
     driver: local
+  {% if netbox_postgres_enabled %}
   netbox-postgres-data:
     driver: local
+  {% endif %}
   netbox-redis-data:
     driver: local
 
