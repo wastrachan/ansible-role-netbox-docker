@@ -28,6 +28,7 @@
     mode: "0644"
   loop:
     - docker-compose.yml
+    - docker-compose.override.yml
     - extra.py
   become: "{{ netbox_become }}"
   notify: Restart netbox
