@@ -56,3 +56,15 @@ netbox_webhooks_enabled: true
 netbox_extra_config: ""
 
 netbot_become: false
+
+netbox_ldap_enabled: false
+netbox_ldap_server_uri: "ldaps://domain.com"
+netbox_ldap_bind_dn: "CN=Netbox,OU=EmbeddedDevices,OU=MyCompany,DC=domain,dc=com"
+netbox_ldap_bind_password: "TopSecretPassword"
+netbox_ldap_user_search_basedn: "OU=MyCompany,DC=domain,dc=com"
+netbox_ldap_group_search_basedn: "OU=SubGroups,OU=MyCompany,DC=domain,dc=com"
+netbox_ldap_require_group_dn: "CN=Netbox-User,OU=SoftwareGroups,OU=SubGroups,OU=MyCompany,DC=domain,dc=com"
+netbox_ldap_group_type: "NestedGroupOfNamesType"
+netbox_ldap_is_admin_dn: "CN=Network Configuration Operators,CN=Builtin,DC=domain,dc=com"
+netbox_ldap_is_superuser_dn: "CN=Domain Admins,CN=Users,DC=domain,dc=com"
+netbox_ldap_ignore_cert_errors: "false"
