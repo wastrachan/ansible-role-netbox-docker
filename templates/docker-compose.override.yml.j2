@@ -1,7 +1,7 @@
 services:
   netbox:
     environment:
-      {% if netbox_ldap_enabled %}
+{% if netbox_ldap_enabled %}
       REMOTE_AUTH_ENABLED: "True"
       REMOTE_AUTH_BACKEND: "netbox.authentication.LDAPBackend"
       AUTH_LDAP_SERVER_URI: "{{ netbox_ldap_server_uri }}"
@@ -14,4 +14,4 @@ services:
       AUTH_LDAP_IS_ADMIN_DN: "{{ netbox_ldap_is_admin_dn }}"
       AUTH_LDAP_IS_SUPERUSER_DN: "{{ netbox_ldap_is_superuser_dn }}"
       LDAP_IGNORE_CERT_ERRORS: "{{ netbox_ldap_ignore_cert_errors }}"
-      {% endif %}
+{% endif %}
