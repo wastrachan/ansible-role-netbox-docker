@@ -15,8 +15,8 @@
   loop:
     - netbox.env
     - postgres.env
-    - redis-cache.env
-    - redis.env
+    - valkey-cache.env
+    - valkey.env
   notify: Restart netbox
 
 - name: Update configuration files
