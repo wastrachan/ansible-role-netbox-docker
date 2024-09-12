@@ -69,7 +69,7 @@ Configuration and installation options are made available as variables. Some of 
 | `netbox_pg_host`                              | `postgres`                    | Postgres database host. This should not be changed if using the default docker-compose setup.                                                           |
 | `netbox_pg_password`                          | `RANDOM_SEED`            | Postgres password                                                                                                                                       |
 | `netbox_pg_user`                              | `netbox`                      | Postgres user                                                                                                                                           |
-| `netbox_additionnal_network_names`                   | -                             | Extra external networks to attach to the netbox container. See [Traefik/nginx-proxy Support](#traefiknginx-proxy-support)                                 |
+| `netbox_additional_network_names`                   | -                             | Extra external networks to attach to the netbox container. See [Traefik/nginx-proxy Support](#traefiknginx-proxy-support)                                 |
 | `netbox_valkey_cache_host`                     | `valkey-cache`                 | Valkey cache instance host. This should not be changed if using the default docker-compose setup.                                                        |
 | `netbox_valkey_cache_insecure_skip_tls_verify` | `false`                       | If true, certificates for valkey cache are not checked                                                                                                   |
 | `netbox_valkey_cache_password`                 | `RANDOM_SEED`               | Valkey cache instance password                                                                                                                           |
@@ -93,13 +93,13 @@ Including an example of how to use your role (for instance, with variables passe
 
 ## Traefik/nginx-proxy Support
 
-This playbook can be used with [traefik](https://hub.docker.com/_/traefik) or jwilder's [nginx-proxy](https://hub.docker.com/r/jwilder/nginx-proxy) by adding labels with `netbox_container_labels`, or environment variables with `netbox_container_env`, respectively. Additionally, `netbox_additionnal_network_names` will attach the netbox service to additional networks, as traefik/nginx-proxy usually reside in a network other than that created by docker-compose projects. While not a complete guide to these services, your configuration may look like the below:
+This playbook can be used with [traefik](https://hub.docker.com/_/traefik) or jwilder's [nginx-proxy](https://hub.docker.com/r/jwilder/nginx-proxy) by adding labels with `netbox_container_labels`, or environment variables with `netbox_container_env`, respectively. Additionally, `netbox_additional_network_names` will attach the netbox service to additional networks, as traefik/nginx-proxy usually reside in a network other than that created by docker-compose projects. While not a complete guide to these services, your configuration may look like the below:
 
 #### traefik
 
 ```yaml
 netbox_port: null
-netbox_additionnal_network_names: 
+netbox_additional_network_names: 
   - traefik
 netbox_container_labels:
   traefik.enable: "true"
@@ -111,7 +111,7 @@ netbox_container_labels:
 
 ```yaml
 netbox_port: null
-netbox_additionnal_network_names: 
+netbox_additional_network_names: 
   - nginx
 netbox_container_env:
   VIRTUAL_HOST: netbox.domain.com

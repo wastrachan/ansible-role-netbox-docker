@@ -39,7 +39,7 @@ netbox_pg_host: postgres
 netbox_pg_password: >
  "{{ lookup('ansible.builtin.password', '/tmp/netbox_pg_password.txt', chars=['ascii_letters'], length=16, seed=inventory_hostname) }}"
 netbox_pg_user: netbox
-netbox_additionnal_network_names: ""
+netbox_additional_network_names: ""
 netbox_valkey_cache_host: valkey-cache
 netbox_valkey_cache_insecure_skip_tls_verify: false
 netbox_valkey_cache_password: >

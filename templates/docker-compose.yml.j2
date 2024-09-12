@@ -38,8 +38,8 @@ services:
     {% endif %}
     networks:
       - default
-    {% if netbox_additionnal_network_names %}
-      {% for network in netbox_additionnal_network_names %}- {{ network }}{% endfor %}
+    {% if netbox_additional_network_names %}
+      {% for network in netbox_additional_network_names %}- {{ network }}{% endfor %}
     {% endif %}
 
   netbox-worker: &netbox-worker
@@ -129,9 +129,9 @@ volumes:
   netbox-valkey-data:
     driver: local
 
-{% if netbox_additionnal_network_names %}
+{% if netbox_additional_network_names %}
 networks:
-{% for network in netbox_additionnal_network_names %}
+{% for network in netbox_additional_network_names %}
   {{ network }}:
     name: {{ network }}
     external: true
