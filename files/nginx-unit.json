@@ -1,53 +1,53 @@
 {
-    "listeners": {
-      "0.0.0.0:8080": {
-        "pass": "routes/main"
-      },
-      "[::]:8080": {
-        "pass": "routes/main"
-      },
-      "0.0.0.0:8081": {
-        "pass": "routes/status"
-      },
-      "[::]:8081": {
-        "pass": "routes/status"
-      }
+  "listeners": {
+    "0.0.0.0:8080": {
+      "pass": "routes/main"
     },
-    "routes": {
-      "main": [
-        {
-          "match": {
-            "uri": "/static/*"
-          },
-          "action": {
-            "share": "/opt/netbox/netbox${uri}"
-          }
+    "[::]:8080": {
+      "pass": "routes/main"
+    },
+    "0.0.0.0:8081": {
+      "pass": "routes/status"
+    },
+    "[::]:8081": {
+      "pass": "routes/status"
+    }
+  },
+  "routes": {
+    "main": [
+      {
+        "match": {
+          "uri": "/static/*"
         },
-        {
-          "action": {
-            "pass": "applications/netbox"
-          }
+        "action": {
+          "share": "/opt/netbox/netbox${uri}"
         }
-      ],
-      "status": [
-        {
-          "match": {
-            "uri": "/status/*"
-          },
-          "action": {
-            "proxy": "http://unix:/opt/unit/unit.sock"
-          }
+      },
+      {
+        "action": {
+          "pass": "applications/netbox"
         }
-      ]
-    },
-    "applications": {
-      "netbox": {
-        "type": "python 3",
-        "path": "/opt/netbox/netbox/",
-        "module": "netbox.wsgi",
-        "home": "/opt/netbox/venv",
-        "processes": 4
       }
-    },
-    "access_log": "/dev/stdout"
-  }
+    ],
+    "status": [
+      {
+        "match": {
+          "uri": "/status/*"
+        },
+        "action": {
+          "proxy": "http://unix:/opt/unit/unit.sock"
+        }
+      }
+    ]
+  },
+  "applications": {
+    "netbox": {
+      "type": "python 3",
+      "path": "/opt/netbox/netbox/",
+      "module": "netbox.wsgi",
+      "home": "/opt/netbox/venv",
+      "processes": 4
+    }
+  },
+  "access_log": "/dev/stdout"
+}

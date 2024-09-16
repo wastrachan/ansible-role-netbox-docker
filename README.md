@@ -95,12 +95,13 @@ Configuration and installation options are made available as variables. Some of 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
 ```yaml
-    - hosts: servers
-      roles:
-        - netbox-docker
+- hosts: servers
+  roles:
+    - netbox-docker
 ```
 
 ## TLS for localhost
+
 Developing locally and testing TLS (i.e. https) features often poses a challenge. This guide is intended for people developing with, on or for NetBox or NetBox Docker on their computer. It allows to access NetBox Docker through TLS on https://localhost:443, https://127.0.0.1:443 and https://[::1]:443. It is based on the setup recommended by the [Netbox-Docker wiki on TLS](https://github.com/netbox-community/netbox-docker/wiki/TLS#tls-for-localhost).
 First install `mkcert` on your computer. It creates and installs a local CA-Certificate, which will be used by mkcert to create and sign other certificates. This way, your certificates are trusted on your own computer and you don't get a TLS warning in your tools (browsers, cURL, and so forth).
 
@@ -110,17 +111,18 @@ Begin by creating the certificates for localhost and it's IPv4 and IPv6 addresse
 mkcert -install
 mkcert localhost 127.0.0.1 ::1
 ```
+
 This should have created a file called `localhost+2.pem` and another file called `localhost+2-key.pem`. Use these two certificates with a slight modification of the setup proposed above:
 
 ```yaml
-    - hosts: localhost
-      vars:
-        netbox_port: null
-        netbox_use_caddy: true
-        netbox_ssl_cert_bundle: path_to/localhost+2.pem
-        netbox_ssl_cert_key: path_to/localhost+2-key.pem
-      roles:
-        - netbox-docker
+- hosts: localhost
+  vars:
+    netbox_port: null
+    netbox_use_caddy: true
+    netbox_ssl_cert_bundle: path_to/localhost+2.pem
+    netbox_ssl_cert_key: path_to/localhost+2-key.pem
+  roles:
+    - netbox-docker
 ```
 
 ## Traefik/nginx-proxy Support
@@ -131,7 +133,7 @@ This playbook can be used with [traefik](https://hub.docker.com/_/traefik) or jw
 
 ```yaml
 netbox_port: null
-netbox_additional_network_names: 
+netbox_additional_network_names:
   - traefik
 netbox_container_labels:
   traefik.enable: "true"
@@ -143,7 +145,7 @@ netbox_container_labels:
 
 ```yaml
 netbox_port: null
-netbox_additional_network_names: 
+netbox_additional_network_names:
   - nginx
 netbox_container_env:
   VIRTUAL_HOST: netbox.domain.com
