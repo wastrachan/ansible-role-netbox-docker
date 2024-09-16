@@ -27,6 +27,7 @@
   loop:
     - docker-compose.yml
     - extra.py
+    - Caddyfile
   notify: Restart netbox
 
 - name: Update container mounts

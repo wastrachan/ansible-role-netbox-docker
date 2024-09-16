@@ -7,6 +7,14 @@ netbox_netbox_version: 4.1
 netbox_netbox_image: "docker.io/netboxcommunity/netbox:v{{ netbox_netbox_version }}-{{ netbox_netbox_docker_version }}"
 netbox_valkey_image: docker.io/valkey/valkey:8.0-alpine
 netbox_postgres_image: docker.io/postgres:16-alpine
+netbox_caddy_image: docker.io/caddy:2-alpine
+
+netbox_use_caddy: false
+netbox_caddy_letsencrypt_email: ""
+netbox_caddy_http_port: 80
+netbox_caddy_https_port: 443
+netbox_ssl_cert_bundle: ""
+netbox_ssl_cert_key: ""
 
 netbox_admin_api_token: ""
 netbox_admin_email: admin@example.com
