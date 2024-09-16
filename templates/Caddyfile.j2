@@ -1,0 +1,19 @@
+{{ ansible_managed | comment }}
+# https://github.com/netbox-community/netbox-docker/wiki/TLS
+
+{% if netbox_caddy_letsencrypt_email %}{
+    # Email to use on Let's Encrypt
+    email {{ netbox_caddy_letsencrypt_email }}
+}{% endif %}
+
+{{ netbox_allowed_hosts | join(", ") }} {
+    reverse_proxy netbox:8080
+    encode gzip zstd
+
+{% if netbox_ssl_cert_bundle %}
+    tls /etc/ssl/private/cert.crt /etc/ssl/private/key.key
+{% endif %}
+    log {
+        level error
+    }
+}

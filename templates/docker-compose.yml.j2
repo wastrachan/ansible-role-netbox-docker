@@ -3,6 +3,47 @@
 # Source: https://github.com/netbox-community/netbox-docker/blob/release/docker-compose.yml
 
 services:
+{% if netbox_use_caddy and (netbox_ssl_cert_bundle or netbox_caddy_letsencrypt_email) %}
+  # caddy container for TLS termination
+  tls:
+    image: {{netbox_caddy_image}}
+    restart: unless-stopped
+    depends_on:
+      netbox:
+        condition: service_healthy
+    volumes:
+    - type: bind
+      source: /etc/timezone
+      target: /etc/timezone
+      read_only: true
+    - type: bind
+      source: /etc/localtime
+      target: /etc/localtime
+      read_only: true
+    - type: bind
+      source: ./Caddyfile
+      target: "/etc/caddy/Caddyfile"
+      read_only: true
+{% if netbox_ssl_cert_bundle %}
+    - type: bind
+      source: "{{netbox_ssl_cert_bundle}}"
+      target: "/etc/ssl/private/cert.crt"
+      read_only: true
+    - type: bind
+      source: "{{netbox_ssl_cert_key}}"
+      target: "/etc/ssl/private/key.key"
+      read_only: true
+{% endif %}
+    - type: volume
+      source: netbox-caddy-data
+      target: /data
+    - type: volume
+      source: netbox-caddy-config
+      target: /config
+    ports:
+    - "{{netbox_caddy_http_port}}:80" # Allows for http redirection
+    - "{{netbox_caddy_https_port}}:443"
+{% endif %}
   netbox: &netbox
     image: {{ netbox_netbox_image }}
     depends_on:
@@ -128,6 +169,10 @@ volumes:
     driver: local
   netbox-valkey-data:
     driver: local
+{% if netbox_use_caddy %}
+  netbox-caddy-data:
+  netbox-caddy-config:
+{% endif %}
 
 {% if netbox_additional_network_names %}
 networks:
