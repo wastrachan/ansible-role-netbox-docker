@@ -6,4 +6,6 @@
 ## directly through environment variables.
 ####
 
-{{ netbox_extra_config }}
+{% for config in netbox_extra_config %}
+{{ config }}
+{% endfor %}
