@@ -1,4 +1,4 @@
-FROM python:3.12-bookworm
+FROM python:3.13-bookworm
 
 LABEL org.opencontainers.image.title="Ansible Runner"
 LABEL org.opencontainers.image.description="Ansible Run Container"
