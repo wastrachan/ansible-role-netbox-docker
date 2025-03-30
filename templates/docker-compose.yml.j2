@@ -21,7 +21,7 @@ services:
       - ./reports:/etc/netbox/reports:z,ro
       - ./scripts:/etc/netbox/scripts:z,ro
       - ./extra.py:/etc/netbox/config/extra.py:ro
-      - netbox-media-files:/opt/netbox/netbox/media:z
+      - netbox-media-files:/opt/netbox/media:z
     security_opt:
       - seccomp:unconfined
     {% if netbox_port %}
