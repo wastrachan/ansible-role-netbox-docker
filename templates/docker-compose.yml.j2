@@ -21,7 +21,14 @@ services:
       - ./reports:/etc/netbox/reports:z,ro
       - ./scripts:/etc/netbox/scripts:z,ro
       - ./extra.py:/etc/netbox/config/extra.py:ro
+      {% if netbox_path_media=="" %}
       - netbox-media-files:/opt/netbox/media:z
+      {% else %}
+      - type: bind
+        source: {{ netbox_path_media }}
+        target: /opt/netbox/media
+        # no equivalent to :z here
+      {% endif %}
     security_opt:
       - seccomp:unconfined
     {% if netbox_port %}
@@ -81,7 +88,13 @@ services:
     image: {{ netbox_postgres_image }}
     env_file: env/postgres.env
     volumes:
+      {% if netbox_path_postgres=="" %}
       - netbox-postgres-data:/var/lib/postgresql/data
+      {% else %}
+      - type: bind
+        source: {{ netbox_path_postgres }}
+        target: /var/lib/postgresql/data
+      {% endif %}
     networks:
       - default
     restart: unless-stopped
@@ -100,7 +113,13 @@ services:
       - valkey-server --appendonly yes --requirepass $$VALKEY_PASSWORD ## $$ because of docker-compose
     env_file: env/valkey.env
     volumes:
+      {% if netbox_path_valkey=="" %}
       - netbox-valkey-data:/data
+      {% else %}
+      - type: bind
+        source: {{ netbox_path_valkey }}
+        target: /data
+      {% endif %}
     networks:
       - default
     restart: unless-stopped
@@ -166,11 +185,17 @@ services:
 
 volumes:
   netbox-media-files:
+{% if netbox_path_media=="" %}
     driver: local
+{% endif %}
   netbox-postgres-data:
+{% if netbox_path_postgres=="" %}
     driver: local
+{% endif %}
   netbox-valkey-data:
+{% if netbox_path_valkey=="" %}
     driver: local
+{% endif %}
 {% if netbox_use_caddy %}
   netbox-caddy-data:
   netbox-caddy-config:
