@@ -21,6 +21,9 @@ services:
       - ./reports:/etc/netbox/reports:z,ro
       - ./scripts:/etc/netbox/scripts:z,ro
       - ./extra.py:/etc/netbox/config/extra.py:ro
+      {% if not netbox_custom_pipeline_content=="" %}
+      - ./custom_pipeline.py:/opt/netbox/netbox/netbox/custom_pipeline.py:ro
+      {% endif %}
       {% if netbox_path_media=="" %}
       - netbox-media-files:/opt/netbox/media:z
       {% else %}

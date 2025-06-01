@@ -92,6 +92,7 @@ Configuration and installation options are made available as variables. Some of 
 | `netbox_ssl_cert_bundle`                       | -                                             | Caddy certificate bundle                                                                                                                                |
 | `netbox_ssl_cert_key`                          | -                                             | Caddy certificate key                                                                                                                                   |
 | `netbox_extra_config`                          | -                                             | If provided, this string will be rendered in [`config/extra.py`](https://github.com/netbox-community/netbox-docker/blob/release/configuration/extra.py) |
+| `netbox_custom_pipeline_content`               | -                                             | If provided, this string will be rendered in `/opt/netbox/netbox/netbox/custom_pipeline.py`                                                             |
 
 ## Example Playbook
 
