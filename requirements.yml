@@ -4,5 +4,5 @@ collections:
     version: 4.5.2
     source: https://galaxy.ansible.com
   - name: community.general
-    version: 10.6.0
+    version: 10.7.1
     source: https://galaxy.ansible.com
