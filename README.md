@@ -35,6 +35,9 @@ Configuration and installation options are made available as variables. Some of 
 | Option                                         | Default                                       | Description                                                                                                                                             |
 | ---------------------------------------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `netbox_base_dir`                              | `/opt/netbox`                                 | Root path for netbox's docker-compose file and data store                                                                                               |
+| `netbox_path_media`                            | -                                             | If set, points to a bind mount directory with netbox' media files. Otherwise docker volumes are used.                                                   |
+| `netbox_path_postgres`                         | -                                             | If set, points to a bind mount directory with postgresql data files. Otherwise docker volumes are used.                                                 |
+| `netbox_path_valkey`                           | -                                             | If set, points to a bind mount directory with valkey data files. Otherwise docker volumes are used.                                                     |
 | `netbox_port`                                  | `8080`                                        | Host port to expose netbox on. If blank, netbox's port is not exposed                                                                                   |
 | `netbox_netbox_image`                          | `docker.io/netboxcommunity/netbox:v4.1-3.0.1` | Netbox docker image tag                                                                                                                                 |
 | `netbox_valkey_image`                          | `docker.io/valkey/valkey:8.0-alpine`          | Valkey docker image tag                                                                                                                                 |
@@ -89,6 +92,7 @@ Configuration and installation options are made available as variables. Some of 
 | `netbox_ssl_cert_bundle`                       | -                                             | Caddy certificate bundle                                                                                                                                |
 | `netbox_ssl_cert_key`                          | -                                             | Caddy certificate key                                                                                                                                   |
 | `netbox_extra_config`                          | -                                             | If provided, this string will be rendered in [`config/extra.py`](https://github.com/netbox-community/netbox-docker/blob/release/configuration/extra.py) |
+| `netbox_custom_pipeline_content`               | -                                             | If provided, this string will be rendered in `/opt/netbox/netbox/netbox/custom_pipeline.py`                                                             |
 
 ## Example Playbook
 

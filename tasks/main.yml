@@ -27,6 +27,7 @@
   loop:
     - docker-compose.yml
     - extra.py
+    - custom_pipeline.py
     - Caddyfile
   notify: Restart netbox
 
