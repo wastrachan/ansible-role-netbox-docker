@@ -1,6 +1,6 @@
 ---
 - name: Restart netbox
   ansible.builtin.command:
-    cmd: "docker compose up -d"
+    cmd: "docker compose up --pull always -d"
     chdir: "{{ netbox_base_dir }}"
   changed_when: false
