@@ -11,32 +11,29 @@
   ansible.builtin.template:
     src: "env/{{ item }}.j2"
     dest: "{{ netbox_base_dir }}/env/{{ item }}"
-    mode: "0640"
+    mode: "0644"
   loop:
     - netbox.env
     - postgres.env
     - valkey-cache.env
     - valkey.env
-  notify: Restart netbox
 
 - name: Update configuration files
   ansible.builtin.template:
     src: "{{ item }}.j2"
     dest: "{{ netbox_base_dir }}/{{ item }}"
-    mode: "0640"
+    mode: "0644"
   loop:
     - docker-compose.yml
     - extra.py
     - custom_pipeline.py
     - Caddyfile
-  notify: Restart netbox
 
 - name: Update container mounts
   ansible.builtin.copy:
     src: nginx-unit.json
     dest: "{{ netbox_base_dir }}/nginx-unit.json"
     mode: "0644"
-  notify: Restart netbox
 
 - name: Remove outdated files
   ansible.builtin.file:
@@ -46,3 +43,9 @@
     - netbox.env
     - configuration/configuration.py
     - configuration/gunicorn_config.py
+
+- name: Restart netbox
+  community.docker.docker_compose_v2:
+    project_src: "{{ netbox_base_dir }}"
+    pull: always
+  changed_when: false
