@@ -2,11 +2,11 @@
 netbox_base_dir: /opt/netbox
 netbox_port: 8080
 
-netbox_netbox_docker_version: 3.4.2
-netbox_netbox_version: 4.4
+netbox_netbox_docker_version: 4.0.0
+netbox_netbox_version: 4.5
 netbox_netbox_image: "docker.io/netboxcommunity/netbox:v{{ netbox_netbox_version }}-{{ netbox_netbox_docker_version }}"
-netbox_valkey_image: docker.io/valkey/valkey:8.0-alpine
-netbox_postgres_image: docker.io/postgres:16-alpine
+netbox_valkey_image: docker.io/valkey/valkey:9-alpine
+netbox_postgres_image: docker.io/postgres:18-alpine
 netbox_caddy_image: docker.io/caddy:2-alpine
 
 netbox_path_media: ""
@@ -74,6 +74,11 @@ netbox_secret_key: >
       chars=['ascii_letters'],
       length=50,
       seed=inventory_hostname + '.netbox_secret_key') }}"
+netbox_api_token_pepper_1: >
+  "{{ lookup('ansible.builtin.password', '/tmp/netbox_api_token_pepper_1.txt',
+      chars=['ascii_letters'],
+      length=50,
+      seed=inventory_hostname + '.netbox_api_token_pepper_1') }}"
 netbox_skip_startup_scripts: false
 netbox_skip_superuser: false
 netbox_webhooks_enabled: true

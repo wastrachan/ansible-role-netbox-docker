@@ -29,12 +29,6 @@
     - custom_pipeline.py
     - Caddyfile
 
-- name: Update container mounts
-  ansible.builtin.copy:
-    src: nginx-unit.json
-    dest: "{{ netbox_base_dir }}/nginx-unit.json"
-    mode: "0644"
-
 - name: Remove outdated files
   ansible.builtin.file:
     path: "{{ netbox_base_dir }}/{{ item }}"
@@ -43,6 +37,7 @@
     - netbox.env
     - configuration/configuration.py
     - configuration/gunicorn_config.py
+    - nginx-unit.json
 
 - name: Restart netbox
   community.docker.docker_compose_v2:

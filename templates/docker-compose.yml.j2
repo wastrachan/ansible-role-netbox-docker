@@ -1,6 +1,6 @@
 #jinja2: lstrip_blocks: True
 # {{ ansible_managed }}
-# Source: https://github.com/netbox-community/netbox-docker/blob/release/docker-compose.yml
+# Based on: https://github.com/netbox-community/netbox-docker/blob/release/docker-compose.yml
 
 services:
   netbox: &netbox
@@ -10,30 +10,26 @@ services:
       - valkey
       - valkey-cache
     env_file: env/netbox.env
-    user: "unit:root"
+    user: "netbox:root"
     healthcheck:
       test: curl -f http://localhost:8080/login/ || exit 1
       start_period: 90s
       timeout: 3s
       interval: 15s
     volumes:
-      - ./nginx-unit.json:/etc/unit/nginx-unit.json:ro
       - ./reports:/etc/netbox/reports:z,ro
       - ./scripts:/etc/netbox/scripts:z,ro
       - ./extra.py:/etc/netbox/config/extra.py:ro
-      {% if not netbox_custom_pipeline_content=="" %}
+      {% if not netbox_custom_pipeline_content %}
       - ./custom_pipeline.py:/opt/netbox/netbox/netbox/custom_pipeline.py:ro
       {% endif %}
-      {% if netbox_path_media=="" %}
-      - netbox-media-files:/opt/netbox/media:z
-      {% else %}
+      {% if netbox_path_media %}
       - type: bind
         source: {{ netbox_path_media }}
         target: /opt/netbox/media
-        # no equivalent to :z here
+      {% else %}
+      - netbox-media-files:/opt/netbox/media:z
       {% endif %}
-    security_opt:
-      - seccomp:unconfined
     {% if netbox_port %}
     ports:
       - "{{ netbox_port }}:8080"
@@ -54,11 +50,9 @@ services:
       {% endfor %}
     {% endif %}
 
-  netbox-worker: &netbox-worker
+  netbox-worker:
     <<: *netbox
     depends_on:
-      valkey:
-        condition: service_healthy
       netbox:
         condition: service_healthy
     command:
@@ -81,12 +75,12 @@ services:
     image: {{ netbox_postgres_image }}
     env_file: env/postgres.env
     volumes:
-      {% if netbox_path_postgres=="" %}
-      - netbox-postgres-data:/var/lib/postgresql/data
-      {% else %}
+      {% if netbox_path_postgres %}
       - type: bind
         source: {{ netbox_path_postgres }}
         target: /var/lib/postgresql/data
+      {% else %}
+      - netbox-postgres-data:/var/lib/postgresql/data
       {% endif %}
     networks:
       - default
@@ -106,12 +100,12 @@ services:
       - valkey-server --appendonly yes --requirepass $$VALKEY_PASSWORD ## $$ because of docker-compose
     env_file: env/valkey.env
     volumes:
-      {% if netbox_path_valkey=="" %}
-      - netbox-valkey-data:/data
-      {% else %}
+      {% if netbox_path_valkey %}
       - type: bind
         source: {{ netbox_path_valkey }}
         target: /data
+      {% else %}
+      - netbox-valkey-data:/data
       {% endif %}
     networks:
       - default
@@ -133,66 +127,53 @@ services:
     networks:
       - default
     restart: unless-stopped
+    volumes:
+      - netbox-valkey-cache-data:/data
     healthcheck: *valkey-healthcheck
 
   {% if netbox_use_caddy and (netbox_ssl_cert_bundle or netbox_caddy_letsencrypt_email) %}
-  tls:
+  caddy:
     image: {{netbox_caddy_image}}
     restart: unless-stopped
     depends_on:
       netbox:
         condition: service_healthy
     volumes:
-      - type: bind
-        source: /etc/timezone
-        target: /etc/timezone
-        read_only: true
-      - type: bind
-        source: /etc/localtime
-        target: /etc/localtime
-        read_only: true
-      - type: bind
-        source: ./Caddyfile
-        target: "/etc/caddy/Caddyfile"
-        read_only: true
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
       {% if netbox_ssl_cert_bundle %}
       - type: bind
-        source: "{{netbox_ssl_cert_bundle}}"
-        target: "/etc/ssl/private/cert.crt"
+        source: {{netbox_ssl_cert_bundle}}
+        target: /etc/ssl/private/cert.crt
         read_only: true
       - type: bind
-        source: "{{netbox_ssl_cert_key}}"
-        target: "/etc/ssl/private/key.key"
+        source: {{netbox_ssl_cert_key}}
+        target: /etc/ssl/private/key.key
         read_only: true
       {% endif %}
-      - type: volume
-        source: netbox-caddy-data
-        target: /data
-      - type: volume
-        source: netbox-caddy-config
-        target: /config
+      - netbox-caddy-data:/data
+      - netbox-caddy-config:/config
     ports:
       - "{{netbox_caddy_http_port}}:80" # Allow for http redirect
       - "{{netbox_caddy_https_port}}:443"
   {% endif %}
 
 volumes:
+  {% if not netbox_path_media %}
   netbox-media-files:
-{% if netbox_path_media=="" %}
-    driver: local
-{% endif %}
+  {% endif %}
+  {% if not netbox_path_postgres %}
   netbox-postgres-data:
-{% if netbox_path_postgres=="" %}
-    driver: local
-{% endif %}
+  {% endif %}
+  {% if not netbox_path_valkey %}
   netbox-valkey-data:
-{% if netbox_path_valkey=="" %}
-    driver: local
-{% endif %}
-{% if netbox_use_caddy %}
+  {% endif %}
+  netbox-valkey-cache-data:
+  {% if netbox_use_caddy %}
   netbox-caddy-data:
   netbox-caddy-config:
-{% endif %}
+  {% endif %}
 
 {% if netbox_additional_network_names %}
 networks:
